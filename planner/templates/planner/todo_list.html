@@ -1,0 +1,45 @@
+{% extends "planner/base.html" %}
+
+{% block content %}
+<h2>Your Tasks</h2>
+
+<a href="/todo/add/" style="padding:8px 12px; background:#007bff; color:white; border-radius:6px; text-decoration:none;">
+  + Add Task
+</a>
+
+<br><br>
+
+{% if todos %}
+  <table style="width:100%; border-collapse:collapse;">
+    <tr style="background:#f0f0f0;">
+      <th style="padding:8px; border:1px solid #ddd;">Task</th>
+      <th style="padding:8px; border:1px solid #ddd;">Created</th>
+      <th style="padding:8px; border:1px solid #ddd;">Completed</th>
+      <th style="padding:8px; border:1px solid #ddd;">Actions</th>
+    </tr>
+
+    {% for t in todos %}
+    <tr>
+      <td style="padding:8px; border:1px solid #ddd;">{{ t.task }}</td>
+      <td style="padding:8px; border:1px solid #ddd;">{{ t.created_at|date:"Y-m-d H:i" }}</td>
+      <td style="padding:8px; border:1px solid #ddd;">{{ t.completed }}</td>
+      <td style="padding:8px; border:1px solid #ddd;">
+        {% if not t.completed %}
+          <a href="/todo/complete/{{ t.id }}/" style="margin-right:8px; text-decoration:none; padding:6px 10px; background:#22c55e; color:white; border-radius:6px;">Mark Done</a>
+        {% else %}
+          <span style="color:#555; margin-right:8px;">Done ✓</span>
+        {% endif %}
+
+        <a href="/todo/delete/{{ t.id }}/" onclick="return confirm('Delete this task?');"
+           style="text-decoration:none; padding:6px 10px; background:#ef4444; color:white; border-radius:6px;">
+           Delete
+        </a>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+{% else %}
+  <p>No tasks yet. Add one now!</p>
+{% endif %}
+
+{% endblock %}

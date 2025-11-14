@@ -1,0 +1,21 @@
+{% extends "planner/base.html" %}
+
+{% block content %}
+<h2>Add New Task</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <label>Task:</label><br>
+    <input type="text" name="task" placeholder="Enter your task" 
+           style="padding:8px; width:300px; border:1px solid #ddd; border-radius:6px; margin-top:5px;">
+    <br><br>
+
+    <button type="submit" 
+            style="padding:8px 16px; background:#007bff; color:white; border:none; border-radius:6px;">
+        Add Task
+    </button>
+</form>
+
+<br>
+<a href="/todo/" style="text-decoration:none; color:#007bff;">Back to Task List</a>
+{% endblock %}
