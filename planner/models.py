@@ -17,3 +17,11 @@ class Todo(models.Model):
 
     def __str__(self):
         return self.task
+class Roadmap(models.Model):
+    day_number = models.IntegerField()
+    date = models.DateField()
+    topics = models.TextField()   # we will save comma-separated topics
+    completed = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"Day {self.day_number}: {self.date}"

@@ -1,0 +1,41 @@
+{% extends "planner/base.html" %}
+
+{% block content %}
+<h2>{{ goal }} Roadmap ({{ months }} Months)</h2>
+
+<p>Here is your AI-generated month-wise + week-wise roadmap.</p>
+
+<div style="display:grid; gap:16px;">
+    {% for m in roadmap %}
+    <div style="background:white; padding:15px; border-radius:10px; 
+                box-shadow:0 4px 15px rgba(0,0,0,0.05);">
+        
+        <h3>Month {{ m.month }}</h3>
+        <strong>Skills:</strong>
+        <ul>
+            {% for s in m.skills %}
+            <li>{{ s }}</li>
+            {% endfor %}
+        </ul>
+
+        <h4>Weekly Breakdown:</h4>
+        <div style="margin-left:20px;">
+            {% for week in m.weeks %}
+                <p><strong>Week {{ forloop.counter }}:</strong></p>
+                <ul>
+                {% for s in week %}
+                    <li>{{ s }}</li>
+                {% empty %}
+                    <li>No tasks</li>
+                {% endfor %}
+                </ul>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<br>
+<a href="/goal-roadmap/" style="color:#007bff; text-decoration:none;">Generate again</a>
+
+{% endblock %}
