@@ -230,3 +230,7 @@ def generate_goal_roadmap(request):
         form = GoalRoadmapForm()
 
     return render(request, 'planner/goal_roadmap_form.html', {"form": form})
+def wellness_timer(request):
+    # Simple view — everything is handled by the template JS
+    return render(request, 'planner/wellness_timer.html')
+
