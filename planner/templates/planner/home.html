@@ -1,33 +1,131 @@
-{% extends "planner/base.html" %}
+{% extends "base.html" %}
+
+{% block title %}Home — Elevana{% endblock %}
+
+{% block head_extra %}
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Righteous&display=swap');
+
+  body {
+    background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%) !important;
+    font-family: 'Comfortaa', cursive;
+    overflow-x: hidden;
+  }
+
+  .anime-bg {
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="%23ffffff" opacity="0.05"/><circle cx="20" cy="30" r="1" fill="%23ffffff" opacity="0.03"/><circle cx="80" cy="70" r="1.5" fill="%23ffffff" opacity="0.04"/></svg>') repeat, linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+    animation: float 20s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .anime-card {
+    transition: all 0.3s ease;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+    border: 1px solid #333;
+  }
+
+  .anime-card:hover {
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+    border-color: #555;
+  }
+
+  .anime-button {
+    background: linear-gradient(45deg, #333, #555);
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    font-family: 'Righteous', cursive;
+    border: 2px solid #666;
+  }
+
+  .anime-button:hover {
+    transform: scale(1.1);
+    background: linear-gradient(45deg, #555, #777);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+  }
+
+  .floating {
+    animation: floating 3s ease-in-out infinite;
+  }
+
+  @keyframes floating {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+  }
+</style>
+{% endblock %}
 
 {% block content %}
-  <h1 style="font-size:28px; margin-bottom:10px;">
-    Welcome to Elevana — FocusZen
-  </h1>
+  <!-- HERO -->
+  <section class="text-center py-20 anime-bg relative overflow-hidden">
+    <div class="absolute inset-0 bg-black/20"></div>
+    <div class="relative z-10 space-y-6">
+      <div class="floating">
+        <h1 class="text-6xl sm:text-7xl font-bold leading-tight text-white drop-shadow-2xl" style="font-family: 'Righteous', cursive;">
+          Elevate Your Learning! 🎓
+        </h1>
+        <p class="text-xl text-pink-200 mt-4">Study smarter, not harder! 💡</p>
+      </div>
 
-  <p style="color:#555; margin-bottom:20px;">
-    Your study + wellness planner.
-  </p>
-
-  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:14px;">
-    <div style="padding:14px; background:white; border-radius:10px; box-shadow:0 2px 10px rgba(0,0,0,0.05);">
-      <strong>Syllabus Manager</strong>
-      <p>Upload and track syllabus.</p>
+      <div class="flex flex-wrap justify-center gap-4 mt-8">
+        <a href="/syllabus/" class="anime-button inline-flex items-center gap-2 px-8 py-4 text-white font-bold shadow-lg hover:shadow-2xl floating">
+          📚 Syllabus Manager
+        </a>
+        <a href="/todo/" class="anime-button inline-flex items-center gap-2 px-8 py-4 text-white font-bold shadow-lg hover:shadow-2xl floating" style="animation-delay: 0.5s;">
+          ✅ Smart To-Do
+        </a>
+        <a href="/roadmap/" class="anime-button inline-flex items-center gap-2 px-8 py-4 text-white font-bold shadow-lg hover:shadow-2xl floating" style="animation-delay: 1s;">
+          🗺️ Roadmap Planner
+        </a>
+        <a href="/wellness/" class="anime-button inline-flex items-center gap-2 px-8 py-4 text-white font-bold shadow-lg hover:shadow-2xl floating" style="animation-delay: 1.5s;">
+          🌸 Wellness Tracker
+        </a>
+      </div>
     </div>
+  </section>
 
-    <div style="padding:14px; background:white; border-radius:10px; box-shadow:0 2px 10px rgba(0,0,0,0.05);">
-      <strong>Smart To-Do</strong>
-      <p>Auto-generated study checklist.</p>
-    </div>
+  <!-- FEATURES GRID -->
+  <section class="mt-16 px-4">
+    <h2 class="text-4xl font-bold text-center text-white mb-12" style="font-family: 'Righteous', cursive;">Choose Your Power-Up! ⚡</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+      <a href="/syllabus/" class="anime-card group p-8 text-white">
+        <div class="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center mb-6 group-hover:animate-bounce mx-auto shadow-lg">
+          <span class="text-3xl">📚</span>
+        </div>
+        <h3 class="text-2xl font-bold text-center mb-4" style="font-family: 'Righteous', cursive;">Syllabus Manager</h3>
+        <p class="text-center text-gray-300">Upload and track syllabus items with smart organization.</p>
+      </a>
 
-    <div style="padding:14px; background:white; border-radius:10px; box-shadow:0 2px 10px rgba(0,0,0,0.05);">
-      <strong>Roadmap</strong>
-      <p>Plan study sessions toward exams.</p>
-    </div>
+      <a href="/todo/" class="anime-card group p-8 text-white">
+        <div class="w-16 h-16 rounded-full bg-gray-600 flex items-center justify-center mb-6 group-hover:animate-bounce mx-auto">
+          <span class="text-3xl">🎯</span>
+        </div>
+        <h3 class="text-2xl font-bold text-center mb-4" style="font-family: 'Righteous', cursive;">Smart To-Do</h3>
+        <p class="text-center text-gray-300">Level up your productivity!</p>
+      </a>
 
-    <div style="padding:14px; background:white; border-radius:10px; box-shadow:0 2px 10px rgba(0,0,0,0.05);">
-      <strong>Wellness</strong>
-      <p>Mood tracker & journaling.</p>
+      <a href="/roadmap/" class="anime-card group p-8 text-white">
+        <div class="w-16 h-16 rounded-full bg-gray-600 flex items-center justify-center mb-6 group-hover:animate-bounce mx-auto">
+          <span class="text-3xl">🚀</span>
+        </div>
+        <h3 class="text-2xl font-bold text-center mb-4" style="font-family: 'Righteous', cursive;">Roadmap Planner</h3>
+        <p class="text-center text-gray-300">Chart your victory path!</p>
+      </a>
+
+      <a href="/wellness/" class="anime-card group p-8 text-white">
+        <div class="w-16 h-16 rounded-full bg-gray-600 flex items-center justify-center mb-6 group-hover:animate-bounce mx-auto">
+          <span class="text-3xl">💖</span>
+        </div>
+        <h3 class="text-2xl font-bold text-center mb-4" style="font-family: 'Righteous', cursive;">Wellness Tracker</h3>
+        <p class="text-center text-gray-300">Keep your spirit high!</p>
+      </a>
     </div>
-  </div>
+  </section>
+
 {% endblock %}

@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{% block title %}Elevana{% endblock %}</title>
+
+    <!-- Tailwind CSS via CDN (no build step) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Optional: tweak Tailwind config for custom colors & fonts -->
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              primary: '#8B5CF6',
+              accent: '#06B6D4',
+            },
+            backgroundImage: {
+              'dark-grad': 'linear-gradient(135deg, #1e1b4b, #0f172a)'
+            }
+          }
+        }
+      }
+    </script>
+
+    {% block head_extra %}{% endblock %}
+  </head>
+    <body class="min-h-screen bg-dark-grad text-gray-100 antialiased">
+
+    <!-- Navbar -->
+    <header class="bg-black/50 backdrop-blur sticky top-0 z-30 shadow-lg">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <a href="/" class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-bold">E</div>
+            <span class="font-semibold text-lg text-white">Elevana</span>
+          </a>
+
+          <nav class="hidden md:flex items-center gap-6 text-sm">
+            <a href="/syllabus/" class="text-gray-300 hover:text-primary transition">Syllabus</a>
+            <a href="/todo/" class="text-gray-300 hover:text-primary transition">To-Do</a>
+            <a href="/roadmap/" class="text-gray-300 hover:text-primary transition">Roadmap</a>
+            <a href="/wellness/" class="text-gray-300 hover:text-primary transition">Wellness</a>
+          </nav>
+
+          <div class="flex items-center gap-3">
+            {% if user.is_authenticated %}
+              <span class="text-white">Hey, {{ user.first_name }}!</span>
+              <form method="post" action="{% url 'logout' %}" class="inline">
+                {% csrf_token %}
+                <button type="submit" class="text-sm px-3 py-1.5 rounded-md bg-gray-700 text-white hover:bg-gray-600 transition">Log out</button>
+              </form>
+            {% else %}
+              <a href="{% url 'login' %}" class="text-sm px-3 py-1.5 rounded-md bg-gray-700 text-white hover:bg-gray-600 transition">Log in</a>
+              <a href="{% url 'register' %}" class="hidden sm:inline-flex items-center gap-2 bg-primary text-white px-4 py-1.5 rounded-full shadow-lg hover:opacity-90 transition">Get Started</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Page content -->
+    <main class="py-10">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        {% block content %}{% endblock %}
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-black/50 border-t border-gray-700 mt-12">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-bold">E</div>
+          <div>
+            <p class="font-semibold text-white">Elevana</p>
+            <p class="text-sm text-gray-400">Study planner • Roadmaps • Wellness</p>
+          </div>
+        </div>
+        <p class="text-sm text-gray-400">© {% now "Y" %} Elevana. All rights reserved.</p>
+      </div>
+    </footer>
+
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

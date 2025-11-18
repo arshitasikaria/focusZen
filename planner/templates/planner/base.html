@@ -1,32 +1,78 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Elevana — FocusZen</title>
-  <style>
-    body { margin:0; font-family: system-ui, sans-serif; background:#f7f9fc; }
-    nav { background:#ffffff; padding:14px 22px; box-shadow:0 2px 10px rgba(0,0,0,0.08); display:flex; gap:20px; font-size:16px; }
-    nav a { text-decoration:none; color:#333; font-weight:500; }
-    nav a:hover { color:#0077ff; }
-    .container { padding:20px; }
-  </style>
-</head>
-<body>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{% block title %}Elevana{% endblock %}</title>
 
-  <!-- Navigation Bar -->
-  <nav>
-    <a href="/">Home</a>
-    <a href="/syllabus/">Syllabus</a>
-    <a href="/todo/">To-Do</a>
-    <a href="/roadmap/">Roadmap</a>
-    <a href="/wellness/">Wellness</a>
-  </nav>
+    <!-- Tailwind CSS via CDN (no build step) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Optional: tweak Tailwind config for custom colors & fonts -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#6C5CE7',
+              accent: '#00BFA6',
+            },
+            backgroundImage: {
+              'soft-grad': 'linear-gradient(135deg, rgba(108,92,231,0.12), rgba(0,191,166,0.08))'
+            }
+          }
+        }
+      }
+    </script>
 
-  <div class="container">
-    {% block content %}
-    {% endblock %}
-  </div>
+    {% block head_extra %}{% endblock %}
+  </head>
+  <body class="min-h-screen bg-gray-50 text-gray-800 antialiased">
 
-</body>
+    <!-- Navbar -->
+    <header class="bg-white/60 backdrop-blur sticky top-0 z-30 shadow-sm">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <a href="/" class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-bold">E</div>
+            <span class="font-semibold text-lg">Elevana</span>
+          </a>
+
+          <nav class="hidden md:flex items-center gap-6 text-sm">
+            <a href="#features" class="hover:text-primary">Features</a>
+            <a href="#roadmap" class="hover:text-primary">Roadmap</a>
+            <a href="#preview" class="hover:text-primary">Preview</a>
+            <a href="#wellness" class="hover:text-primary">Wellness</a>
+          </nav>
+
+          <div class="flex items-center gap-3">
+            <a href="/login/" class="text-sm px-3 py-1.5 rounded-md hover:bg-gray-100">Log in</a>
+            <a href="/signup/" class="hidden sm:inline-flex items-center gap-2 bg-primary text-white px-4 py-1.5 rounded-full shadow-sm hover:opacity-95">Get Started</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Page content -->
+    <main class="py-10">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        {% block content %}{% endblock %}
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t mt-12">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-bold">E</div>
+          <div>
+            <p class="font-semibold">Elevana</p>
+            <p class="text-sm text-gray-500">Study planner • Roadmaps • Wellness</p>
+          </div>
+        </div>
+        <p class="text-sm text-gray-500">© {% now "Y" %} Elevana. All rights reserved.</p>
+      </div>
+    </footer>
+
+    {% block scripts %}{% endblock %}
+  </body>
 </html>

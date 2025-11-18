@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import SyllabusForm
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
+from .forms import SyllabusForm, RegisterForm, LoginForm
 from .models import Syllabus, Todo
 import math
-import datetime 
+import datetime
 import difflib
 import math
 from django.shortcuts import render, redirect
@@ -233,4 +235,37 @@ def generate_goal_roadmap(request):
 def wellness_timer(request):
     # Simple view — everything is handled by the template JS
     return render(request, 'planner/wellness_timer.html')
+
+def custom_login(request):
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data.get('email')
+            password = form.cleaned_data.get('password')
+            user = authenticate(request, username=email, password=password)
+            if user is not None:
+                login(request, user)
+                messages.success(request, f"Welcome back, {user.first_name}!")
+                return redirect('home')
+            else:
+                messages.error(request, "Invalid email or password.")
+        else:
+            messages.error(request, "Invalid email or password.")
+    else:
+        form = LoginForm()
+    return render(request, 'registration/login.html', {'form': form})
+
+def register(request):
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            messages.success(request, f"Welcome, {user.first_name}!")
+            return redirect('home')
+        else:
+            messages.error(request, "Registration failed. Please check the form.")
+    else:
+        form = RegisterForm()
+    return render(request, 'planner/register.html', {'form': form})
 
