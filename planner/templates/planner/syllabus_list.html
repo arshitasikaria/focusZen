@@ -3,33 +3,48 @@
 {% block content %}
 <h2>Your Syllabus</h2>
 
-<a href="/syllabus/add/" style="padding:8px 16px; background:#007bff; color:white; border:none; border-radius:5px; text-decoration:none;">
-    + Add New Topic
+<a href="{% url 'upload_syllabus' %}" style="padding:10px 20px; background:#007bff; color:white; border:none; border-radius:5px; text-decoration:none; font-size:16px;">
+    + Upload Syllabus & Generate Plan
 </a>
 
 <br><br>
 
 {% if items %}
-    <table style="width:100%; border-collapse:collapse;">
-        <tr style="background:#f0f0f0;">
-            <th style="padding:8px; border:1px solid #ddd;">Subject</th>
-            <th style="padding:8px; border:1px solid #ddd;">Topic</th>
-            <th style="padding:8px; border:1px solid #ddd;">Est. Time (min)</th>
-            <th style="padding:8px; border:1px solid #ddd;">Completed</th>
-        </tr>
+    {% for syllabus in items %}
+    <div style="border:1px solid #ddd; padding:20px; margin-bottom:20px; border-radius:5px;">
+        <h3>{{ syllabus.title }}</h3>
+        <p><strong>Exam Date:</strong> {{ syllabus.exam_date }}</p>
+        <p><strong>Topics:</strong> {{ syllabus.topics|truncatechars:100 }}</p>
 
-        {% for i in items %}
-        <tr>
-            <td style="padding:8px; border:1px solid #ddd;">{{ i.subject }}</td>
-            <td style="padding:8px; border:1px solid #ddd;">{{ i.topic }}</td>
-            <td style="padding:8px; border:1px solid #ddd;">{{ i.estimated_time }}</td>
-            <td style="padding:8px; border:1px solid #ddd;">{{ i.completed }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+        {% if syllabus.roadmaps.exists %}
+            <div style="margin:10px 0;">
+                <strong>Progress:</strong> {{ syllabus.completed_count }}/{{ syllabus.total_count }} days completed
+                <div style="background: #f0f0f0; border-radius: 10px; padding: 2px; margin:5px 0;">
+                    <div style="width: {% widthratio syllabus.completed_count syllabus.total_count 100 %}%; background: #28a745; height: 15px; border-radius: 10px;"></div>
+                </div>
+            </div>
+        {% endif %}
+
+        <div style="margin-top:15px;">
+            <a href="{% url 'syllabus_plan' syllabus.id %}" style="padding:8px 16px; background:#28a745; color:white; text-decoration:none; border-radius:5px; margin-right:10px;">
+                View Study Plan
+            </a>
+            {% if syllabus.completed %}
+                <span style="color: green; font-weight: bold;">✓ Completed</span>
+            {% else %}
+                <form method="post" action="{% url 'complete_syllabus' syllabus.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" style="padding:8px 16px; background:#ffc107; color:black; border:none; border-radius:5px;">
+                        Mark Complete
+                    </button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
 
 {% else %}
-    <p>No syllabus added yet.</p>
+    <p>No syllabus added yet. Upload your first syllabus to get started!</p>
 {% endif %}
 
 {% endblock %}

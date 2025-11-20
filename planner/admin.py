@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Syllabus, Todo
+from .models import Syllabus, ScheduledTopic
 
 admin.site.register(Syllabus)
-admin.site.register(Todo)
+admin.site.register(ScheduledTopic)

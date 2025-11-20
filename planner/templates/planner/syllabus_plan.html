@@ -1,0 +1,60 @@
+{% extends "planner/base.html" %}
+
+{% block content %}
+<h2>Study Plan for {{ syllabus.subject }}</h2>
+
+<div style="margin-bottom:20px;">
+    <strong>Progress:</strong> {{ completed_days }}/{{ total_days }} days completed ({{ progress_percentage }}%)
+    <div style="background: #f0f0f0; border-radius: 10px; padding: 2px; margin:5px 0;">
+        <div style="width: {{ progress_percentage }}%; background: #28a745; height: 15px; border-radius: 10px;"></div>
+    </div>
+    <p>Days remaining: {{ remaining_days }}</p>
+</div>
+
+{% if roadmap %}
+    <table style="width:100%; border-collapse:collapse;">
+        <thead>
+            <tr style="background:#f8f9fa;">
+                <th style="border:1px solid #ddd; padding:8px;">Day</th>
+                <th style="border:1px solid #ddd; padding:8px;">Date</th>
+                <th style="border:1px solid #ddd; padding:8px;">Topics</th>
+                <th style="border:1px solid #ddd; padding:8px;">Status</th>
+                <th style="border:1px solid #ddd; padding:8px;">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for day in roadmap %}
+            <tr>
+                <td style="border:1px solid #ddd; padding:8px;">{{ day.day_number }}</td>
+                <td style="border:1px solid #ddd; padding:8px;">{{ day.date }}</td>
+                <td style="border:1px solid #ddd; padding:8px;">{{ day.topics }}</td>
+                <td style="border:1px solid #ddd; padding:8px;">
+                    {% if day.completed %}
+                        <span style="color: green; font-weight: bold;">✓ Completed</span>
+                    {% else %}
+                        <span style="color: orange;">Pending</span>
+                    {% endif %}
+                </td>
+                <td style="border:1px solid #ddd; padding:8px;">
+                    {% if not day.completed %}
+                        <form method="post" action="{% url 'complete_roadmap_day' day.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" style="padding:5px 10px; background:#28a745; color:white; border:none; border-radius:3px;">
+                                Mark Complete
+                            </button>
+                        </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No study plan generated yet.</p>
+{% endif %}
+
+<a href="{% url 'syllabus_list' %}" style="padding:10px 20px; background:#007bff; color:white; text-decoration:none; border-radius:5px;">
+    Back to Syllabus List
+</a>
+
+{% endblock %}
