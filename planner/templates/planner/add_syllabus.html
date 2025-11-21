@@ -1,16 +1,11 @@
 {% extends "planner/base.html" %}
 
 {% block content %}
-<h2>Add Syllabus Topic</h2>
+<h2>Upload Syllabus</h2>
 
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit" style="padding:8px 16px; background:#007bff; color:white; border:none; border-radius:5px;">
-        Add
-    </button>
+    <button type="submit">Save syllabus</button>
 </form>
-
-<br>
-<a href="/syllabus/" style="text-decoration:none; color:#007bff;">Back to List</a>
 {% endblock %}

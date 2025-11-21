@@ -16,7 +16,9 @@ import PyPDF2
 import pytesseract
 from PIL import Image
 import os
-
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .forms import SyllabusForm
 
 # ===========================================
 #   SKILL DATABASE FOR GOALS (GOAL → SKILLS)
@@ -129,7 +131,7 @@ def home(request):
 @login_required
 def add_syllabus(request):
     if request.method == 'POST':
-        form = SyllabusForm(request.POST)
+        form = SyllabusForm(request.POST, request.FILES)
         if form.is_valid():
             syllabus = form.save(commit=False)
             syllabus.user = request.user
@@ -149,8 +151,10 @@ def syllabus_list(request):
     for item in items:
         if item.total_count > 0:
             item.progress_percent = (item.completed_count / item.total_count) * 100
+            item.progress_width = f"{item.progress_percent:.0f}%"
         else:
             item.progress_percent = 0
+            item.progress_width = "0%"
     return render(request, 'planner/syllabus_list.html', {'items': items})
 
 # Todo: add task view
@@ -446,4 +450,6 @@ def syllabus_plan(request, syllabus_id):
     }
 
     return render(request, 'planner/syllabus_plan.html', context)
+
+
 

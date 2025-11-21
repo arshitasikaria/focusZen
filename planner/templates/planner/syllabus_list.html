@@ -1,9 +1,51 @@
 {% extends "planner/base.html" %}
 
 {% block content %}
+<style>
+.progress-bar {
+    background: #28a745;
+    height: 15px;
+    border-radius: 10px;
+}
+.progress-container {
+    background: #f0f0f0;
+    border-radius: 10px;
+    padding: 2px;
+    margin: 5px 0;
+}
+.syllabus-card {
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+.btn-primary {
+    padding: 10px 20px;
+    background: #007bff;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 16px;
+}
+.btn-success {
+    padding: 8px 16px;
+    background: #28a745;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+}
+.btn-warning {
+    padding: 8px 16px;
+    background: #ffc107;
+    color: black;
+    border-radius: 5px;
+    border: none;
+}
+</style>
+
 <h2>Your Syllabus</h2>
 
-<a href="{% url 'upload_syllabus' %}" style="padding:10px 20px; background:#007bff; color:white; border:none; border-radius:5px; text-decoration:none; font-size:16px;">
+<a href="{% url 'upload_syllabus' %}" class="btn-primary">
     + Upload Syllabus & Generate Plan
 </a>
 
@@ -11,30 +53,35 @@
 
 {% if items %}
     {% for syllabus in items %}
-    <div style="border:1px solid #ddd; padding:20px; margin-bottom:20px; border-radius:5px;">
+    <div class="syllabus-card">
         <h3>{{ syllabus.title }}</h3>
         <p><strong>Exam Date:</strong> {{ syllabus.exam_date }}</p>
         <p><strong>Topics:</strong> {{ syllabus.topics|truncatechars:100 }}</p>
 
         {% if syllabus.roadmaps.exists %}
-            <div style="margin:10px 0;">
-                <strong>Progress:</strong> {{ syllabus.completed_count }}/{{ syllabus.total_count }} days completed
-                <div style="background: #f0f0f0; border-radius: 10px; padding: 2px; margin:5px 0;">
-                    <div style="width: {% widthratio syllabus.completed_count syllabus.total_count 100 %}%; background: #28a745; height: 15px; border-radius: 10px;"></div>
-                </div>
-            </div>
+        <div style="margin: 10px 0;">
+            <strong>Progress:</strong> {{ syllabus.completed_count }}/{{ syllabus.total_count }} days completed
+
+            <div class="progress-container">
+                <div class="progress-bar" 
+                    
+                    style="width : {{ syllabus.progress_percent|floatformat:0 }}%">
+
+                 </div>
+        </div>
         {% endif %}
 
-        <div style="margin-top:15px;">
-            <a href="{% url 'syllabus_plan' syllabus.id %}" style="padding:8px 16px; background:#28a745; color:white; text-decoration:none; border-radius:5px; margin-right:10px;">
+        <div style="margin-top: 15px;">
+            <a href="{% url 'syllabus_plan' syllabus.id %}" class="btn-success" style="margin-right:10px;">
                 View Study Plan
             </a>
+
             {% if syllabus.completed %}
                 <span style="color: green; font-weight: bold;">✓ Completed</span>
             {% else %}
                 <form method="post" action="{% url 'complete_syllabus' syllabus.id %}" style="display:inline;">
                     {% csrf_token %}
-                    <button type="submit" style="padding:8px 16px; background:#ffc107; color:black; border:none; border-radius:5px;">
+                    <button type="submit" class="btn-warning">
                         Mark Complete
                     </button>
                 </form>
@@ -42,7 +89,6 @@
         </div>
     </div>
     {% endfor %}
-
 {% else %}
     <p>No syllabus added yet. Upload your first syllabus to get started!</p>
 {% endif %}
